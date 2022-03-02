@@ -1,6 +1,23 @@
-.makeUpYourBlockTypeName {
-  background-color: #b8c9f8;
-  border: 1px solid #94a9e2;
-  border-radius: 5px;
-  padding: 20px;
+// Colors
+
+$green: #69B868;
+$white: #FFFFFF;
+$beige: #DFDCCC;
+$black: #333333;
+
+.donation-form {
+  background-color: $green;
+  width: 25vw;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+}
+
+.step-one {
+  color: $white;
+  input[type="email"], input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid $white;
+  }
 }

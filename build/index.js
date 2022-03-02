@@ -2276,10 +2276,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
 
 
 
-const DonationForm = () => {
+
+
+const DonationForm = props => {
   const {
     register,
     handleSubmit,
@@ -2288,19 +2294,81 @@ const DonationForm = () => {
       errors
     }
   } = Object(react_hook_form__WEBPACK_IMPORTED_MODULE_2__["useForm"])();
+  const [currentStep, setCurrentStep] = Object(react__WEBPACK_IMPORTED_MODULE_3__["useState"])(1);
 
-  const onSubmit = data => console.log(data);
+  const onSubmit = data => {
+    setCurrentStep(3);
+    console.log(data);
+  };
 
-  console.log(watch("example"));
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("form", {
-    onSubmit: handleSubmit(onSubmit)
-  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("input", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({
-    defaultValue: "test"
-  }, register("example"))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("input", register("exampleRequired", {
-    required: true
-  })), errors.exampleRequired && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("span", null, "This field is required"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("input", {
-    type: "submit"
-  }));
+  console.log(props);
+  const watchAllFields = watch(); // when pass nothing as argument, you are watching everything
+
+  const nextStep = async () => {
+    console.log("hello", watchAllFields, errors);
+
+    if (watchAllFields.firstName !== "" && watchAllFields.lastName !== "" && watchAllFields.email !== "") {
+      setCurrentStep(2);
+    }
+  };
+
+  const stepTwo = () => {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("article", {
+      className: "step-two"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("input", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, register("cardNumber", {
+      required: true,
+      maxLength: 16,
+      minLength: 16
+    }), {
+      placeholder: "Card Number"
+    })), errors.cardNumber && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("span", null, "Card number is required and should be 16 digits long"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("input", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, register("expDate", {
+      required: true,
+      pattern: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/
+    }), {
+      placeholder: "Expiration Date MM/YY"
+    })), errors.expDate && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("span", null, "Expiration date doesn't match the ", errors.expDate.type), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("input", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, register("CVV", {
+      required: true,
+      maxLength: 3,
+      minLength: 3
+    }), {
+      placeholder: "CVV"
+    })), errors.CVV && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("span", null, "CVV is a 3 digit number"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("label", {
+      htmlFor: "AnonDonation"
+    }, "Would you like to make this donation Anonymously?"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("input", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, register("anonDonation"), {
+      type: "checkbox",
+      id: "AnonDonation"
+    })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("button", {
+      type: "submit"
+    }, "Submit Form"));
+  };
+
+  if (currentStep !== 3) {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("form", {
+      className: "donation-form",
+      onSubmit: handleSubmit(onSubmit)
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("article", {
+      className: "step-one"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("input", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({
+      placeholder: "First Name"
+    }, register("firstName", {
+      required: true
+    }))), errors.firstName && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("span", null, "First Name is required"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("input", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({
+      placeholder: "Last Name"
+    }, register("lastName", {
+      required: true
+    }))), errors.lastName && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("span", null, "Last Name is required"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("input", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, register("email", {
+      required: true
+    }), {
+      type: "email",
+      placeholder: "email"
+    })), errors.email && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("span", null, "Email is required"), currentStep === 1 && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("button", {
+      onClick: () => nextStep()
+    }, "Move On")), currentStep === 2 && stepTwo());
+  } else if (currentStep === 3) {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("div", {
+      className: "submitted-form"
+    }, console.log(watchAllFields), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("p", null, "Thanks for your support ", watchAllFields.firstName + ' ' + watchAllFields.lastName, "!"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("p", null, "Your donation to X has succesfully been proccessed using the Card ending in xxx", watchAllFields.cardNumber.substr(12), " that expires on ", watchAllFields.expDate), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("p", null, "You can expect to receive a confirmation email at ", watchAllFields.email, " shortly."), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("p", null));
+  }
 };
 
 /***/ }),
@@ -2317,7 +2385,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _index_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.scss */ "./src/index.scss");
-/* harmony import */ var _DonationForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DonationForm */ "./src/DonationForm.js");
+/* harmony import */ var _DonationForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DonationForm */ "./src/DonationForm.js");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
+
+
 
 
 
@@ -2326,35 +2400,78 @@ wp.blocks.registerBlockType("makeupnamespace/make-up-block-name", {
   icon: "welcome-learn-more",
   category: "common",
   attributes: {
-    skyColor: {
+    title: {
       type: "string"
     },
-    grassColor: {
+    logo: {
       type: "string"
+    },
+    anonymous: {
+      type: "boolean"
     }
   },
   edit: EditComponent,
   save: function () {
-    return null;
+    return;
   }
 });
 
 function EditComponent(props) {
-  function updateSkyColor(e) {
+  let settings = {
+    anonymous: false,
+    title: '',
+    logo: ''
+  };
+
+  const form = props => {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      className: "givewp-form"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_DonationForm__WEBPACK_IMPORTED_MODULE_2__["DonationForm"], {
+      props: props
+    }));
+  };
+
+  function updateAnonymous(e) {
     props.setAttributes({
-      skyColor: e.target.value
+      anonymous: e.target.checked
     });
+    settings.anonymous = e.target.checked;
   }
 
-  function updateGrassColor(e) {
+  function updateTitle(e) {
     props.setAttributes({
-      grassColor: e.target.value
+      title: e.target.value
     });
+    settings.title = e.target.value;
   }
 
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
-    className: "givewp-form"
-  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_DonationForm__WEBPACK_IMPORTED_MODULE_3__["DonationForm"], null));
+  function updateLogo(e) {
+    props.setAttributes({
+      logo: e.target.value
+    });
+    console.log("logo update");
+    settings.logo = e.target.value;
+  }
+
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", Object(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__["useBlockProps"])(), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__["InspectorControls"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["Panel"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["PanelBody"], {
+    title: "Donation Form"
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["CheckboxControl"], {
+    label: "Anonymous",
+    help: "An option to donate anonymously",
+    onChange: e => updateAnonymous(e)
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["PanelBody"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("label", {
+    htmlFor: "Logo"
+  }, "Paste the link to your Logo here:"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("input", {
+    onChange: e => updateLogo(e),
+    id: "Logo",
+    placeholder: "https://cdn.pixabay.com/photo/2017/09/18/16/54/links-2762389_960_720.png"
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("label", {
+    htmlFor: "title"
+  }, "Form Title:"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("input", {
+    onChange: e => updateLogo(e),
+    id: "title",
+    placeholder: "Donate Today!"
+  })))), form(settings));
 }
 
 /***/ }),
@@ -2370,6 +2487,28 @@ function EditComponent(props) {
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
+
+/***/ }),
+
+/***/ "@wordpress/block-editor":
+/*!*************************************!*\
+  !*** external ["wp","blockEditor"] ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["blockEditor"]; }());
+
+/***/ }),
+
+/***/ "@wordpress/components":
+/*!************************************!*\
+  !*** external ["wp","components"] ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["components"]; }());
 
 /***/ }),
 
