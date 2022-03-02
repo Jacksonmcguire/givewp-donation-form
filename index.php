@@ -24,8 +24,8 @@ class BradsBoilerplate {
 
   function renderCallback($attributes) {
     if (!is_admin()) {
-      wp_enqueue_script('boilerplateFrontendScript', plugin_dir_url(__FILE__) . 'build/frontend.js', array('wp-element'));
-      wp_enqueue_style('boilerplateFrontendStyles', plugin_dir_url(__FILE__) . 'build/frontend.css');
+      wp_enqueue_script('boilerplateFrontendScript', plugin_dir_url(__FILE__) . 'build/index.js', array('wp-element'));
+      wp_enqueue_style('boilerplateFrontendStyles', plugin_dir_url(__FILE__) . 'build/index.css');
     }
 
     ob_start(); ?>
@@ -35,7 +35,7 @@ class BradsBoilerplate {
   }
 
   function renderCallbackBasic($attributes) {
-    return '<div class="boilerplate-frontend">Hello, the sky is ' . $attributes['skyColor'] . ' and the grass is ' . $attributes['grassColor'] . '.</div>';
+    return '<div>Hello, the sky is ' . $attributes['skyColor'] . ' and the grass is ' . $attributes['grassColor'] . '.</div>';
   }
 }
 
